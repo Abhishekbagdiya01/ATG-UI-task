@@ -1,4 +1,4 @@
-# atg_task_1
+# ATG_task_1
 
 A new Flutter project.
 
@@ -14,3 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+<b>UI ScreenShots:</b></br>
+<img src="https://github.com/Abhishekbagdiya01/UI-task/blob/master/screenshots/screenshot1.png" width=30% height=30%/>
+<img src="https://github.com/Abhishekbagdiya01/UI-task/blob/master/screenshots/screenshot3.png" width=30% height=30%/>
+<img src="https://github.com/Abhishekbagdiya01/UI-task/blob/master/screenshots/screenshot4.png" width=30% height=30%/>
