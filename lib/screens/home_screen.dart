@@ -1,3 +1,6 @@
+import 'package:atg_task_1/api/services.dart';
+import 'package:atg_task_1/models/lesson_model.dart';
+import 'package:atg_task_1/models/program_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,8 +9,26 @@ import '../const.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/title_bar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  ProgramModel? programs;
+  LessonModel? lesson;
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    // programs = await ApiService().fetchPrograms();
+    lesson = await ApiService().fetchLessons();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,65 +124,81 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   //-------------------------------Program for you----------------------
                   TitleBar(title: "Program for you"),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 10,
-                    height: 300,
-                    child: ListView.builder(
-                      itemCount: programForYou.length,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 1,
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              programForYou[index]["imageURL"],
-                            ),
-                            Container(
-                              width: 250,
-                              height: 150,
-                              padding: EdgeInsets.only(left: 10, top: 10),
+                  FutureBuilder(
+                    future: ApiService().fetchPrograms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return SizedBox(
+                          width: MediaQuery.sizeOf(context).width - 10,
+                          height: 300,
+                          child: ListView.builder(
+                            itemCount: snapshot.data!.items!.length,
+                            itemBuilder: (context, index) => Card(
+                              elevation: 1,
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      programForYou[index]["title"],
-                                      style: GoogleFonts.inter(
-                                          color:
-                                              Color.fromARGB(255, 89, 138, 237),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      programForYou[index]["desc"],
-                                      style: GoogleFonts.inter(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      programForYou[index]["lesson"],
-                                      style: GoogleFonts.inter(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
+                                  index % 2 == 0
+                                      ? Image.asset(lifestyleImg)
+                                      : Image.asset(workingParentImg),
+                                  Container(
+                                    width: 250,
+                                    height: 150,
+                                    padding: EdgeInsets.only(left: 10, top: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            snapshot
+                                                .data!.items![index].category
+                                                .toString(),
+                                            style: GoogleFonts.inter(
+                                                color: Color.fromARGB(
+                                                    255, 89, 138, 237),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            snapshot.data!.items![index].name
+                                                .toString(),
+                                            style: GoogleFonts.inter(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            snapshot.data!.items![index].lesson
+                                                    .toString() +
+                                                " lesson",
+                                            style: GoogleFonts.inter(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      scrollDirection: Axis.horizontal,
-                    ),
+                            ),
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
 
                   //--------------------------Events and Experience-----------------------------
@@ -250,65 +287,89 @@ class HomeScreen extends StatelessWidget {
 
                   //--------------------------Lesson for you-------------------------------
                   TitleBar(title: "Lesson for you"),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width - 10,
-                    height: 300,
-                    child: ListView.builder(
-                      itemCount: lessonForYou.length,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 1,
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              lessonForYou[index]["imageURL"],
-                            ),
-                            Container(
-                              width: 250,
-                              height: 150,
-                              padding: EdgeInsets.only(left: 10, top: 10),
+                  FutureBuilder(
+                    future: ApiService().fetchLessons(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return SizedBox(
+                          width: MediaQuery.sizeOf(context).width - 10,
+                          height: 300,
+                          child: ListView.builder(
+                            itemCount: snapshot.data!.items!.length,
+                            itemBuilder: (context, index) => Card(
+                              elevation: 1,
                               child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      lessonForYou[index]["title"],
-                                      style: GoogleFonts.inter(
-                                          color:
-                                              Color.fromARGB(255, 89, 138, 237),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
+                                  Image.asset(
+                                    yogaWomanImg,
                                   ),
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      lessonForYou[index]["desc"],
-                                      style: GoogleFonts.inter(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
+                                  Container(
+                                    width: 250,
+                                    height: 150,
+                                    padding: EdgeInsets.only(left: 10, top: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            snapshot
+                                                .data!.items![index].category
+                                                .toString(),
+                                            style: GoogleFonts.inter(
+                                                color: Color.fromARGB(
+                                                    255, 89, 138, 237),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            snapshot.data!.items![index].name
+                                                .toString(),
+                                            style: GoogleFonts.inter(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        ListTile(
+                                            leading: Text(
+                                              snapshot.data!.items![index]
+                                                      .duration
+                                                      .toString() +
+                                                  " min",
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16),
+                                            ),
+                                            trailing: ImageIcon(AssetImage(
+                                                "assets/icons/lock.png"))),
+                                      ],
                                     ),
-                                  ),
-                                  ListTile(
-                                      leading: Text(
-                                        lessonForYou[index]["time"],
-                                        style: GoogleFonts.inter(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
-                                      ),
-                                      trailing: ImageIcon(
-                                          AssetImage("assets/icons/lock.png"))),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      scrollDirection: Axis.horizontal,
-                    ),
+                            ),
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
                   ),
                 ],
               ),

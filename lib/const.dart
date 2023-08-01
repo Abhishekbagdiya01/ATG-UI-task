@@ -78,3 +78,7 @@ List<Map> lessonForYou = [
     "time": "1 min"
   },
 ];
+
+const lifestyleImg = "assets/images/lifestyle.png";
+const workingParentImg = "assets/images/parents.png";
+const yogaWomanImg = "assets/images/young-woman.png";
