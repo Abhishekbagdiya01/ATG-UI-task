@@ -1,8 +1,5 @@
-# ATG_task_1
+# ATG_tasks Banao Flutter
 
-A new Flutter project.
-
-## Getting Started
 
 This is a Flutter project that I created as part of a task from Banao Flutter. The task had two rounds: in the first round, I had to create a UI for an education app, and in the second round, I had to show data from a given API.
 
