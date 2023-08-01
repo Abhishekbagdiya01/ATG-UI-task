@@ -1,6 +1,5 @@
 import 'package:atg_task_1/api/services.dart';
-import 'package:atg_task_1/models/lesson_model.dart';
-import 'package:atg_task_1/models/program_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,27 +8,8 @@ import '../const.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/title_bar.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  ProgramModel? programs;
-  LessonModel? lesson;
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  void fetchData() async {
-    // programs = await ApiService().fetchPrograms();
-    lesson = await ApiService().fetchLessons();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.only(left: 10, right: 10),
