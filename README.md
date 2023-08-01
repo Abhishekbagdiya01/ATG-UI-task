@@ -7,8 +7,8 @@ The UI that I created is a simple but functional design that includes a home scr
 
 I used the following technologies in this project:
 
-Flutter
-Dart
+Flutter,
+Dart,
 Dummy API
 (https://632017e19f82827dcf24a655.mockapi.io/api/programs)
 (https://632017e19f82827dcf24a655.mockapi.io/api/lessons)
